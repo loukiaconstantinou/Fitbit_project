@@ -49,7 +49,7 @@ if __name__ == "__main__":
     if not os.path.isdir("combined_csv_files_{}".format(args.name)):
         os.makedirs("combined_csv_files_{}".format(args.name))
 
-    outdir2 = "combined_csv_files_{}".format(args.name)
+    outdir2 = "combined_csv_files_{}".format(args.name) #this is the output dir I'm going to use
 
     dictionary = {}  
     for path in filepaths2:  
