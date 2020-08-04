@@ -8,7 +8,8 @@ def parse_args():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--datapath", type=str, help="Input data path", required=True)
-    parser.add_argument("--name", type=str, default="Loukia", help="person to import data from", choices=["Loukia", "Kyriacos", "Nikitas"])
+    parser.add_argument("--name", type=str, default="Loukia", 
+    help="person to import data from", choices=["Loukia", "Kyriacos", "Irene", "Christina"])
     args = parser.parse_args()
     return args
 
@@ -20,8 +21,11 @@ if __name__ == "__main__":
         folderpath = r"{}/LoukiaConstantinou/user-site-export".format(folderpath)
     elif args.name == 'Kyriacos':
         folderpath = r"{}/KyriacosXanthos/user-site-export".format(folderpath)
-    elif args.name == 'Nikitas':
-        folderpath = r"{}/AlexNikitas/user-site-export".format(folderpath)   
+    elif args.name == 'Irene':
+        folderpath = r"{}/IreneConstantinou/user-site-export".format(folderpath)   
+    elif args.name == 'Christina':
+        folderpath = r"{}/Christina/user-site-export".format(folderpath) 
+
 
     if not os.path.isdir("excel_files_{}".format(args.name)):
         os.makedirs("excel_files_{}".format(args.name))
@@ -42,10 +46,10 @@ if __name__ == "__main__":
     folderpath2 = r"{}".format(outdir) # make sure to put the 'r' in front
     filepaths2  = [os.path.join(folderpath2, name) for name in os.listdir(folderpath2)]
 
-    if not os.path.isdir("combined_excel_files_{}".format(args.name)):
-        os.makedirs("combined_excel_files_{}".format(args.name))
+    if not os.path.isdir("combined_csv_files_{}".format(args.name)):
+        os.makedirs("combined_csv_files_{}".format(args.name))
 
-    outdir2 = "combined_excel_files_{}".format(args.name)
+    outdir2 = "combined_csv_files_{}".format(args.name)
 
     dictionary = {}  
     for path in filepaths2:  
@@ -67,4 +71,5 @@ if __name__ == "__main__":
         # concatenate them..
         combined = pd.concat(frames)
         # write it out
-        combined.to_excel("{}/combined_{}.xlsx".format(outdir2, key), header=False, index=False)
+        # combined.to_excel("{}/combined_{}.xlsx".format(outdir2, key), header=False, index=False)
+        combined.to_csv("{}/combined_{}.csv".format(outdir2, key), header=False, index=False)
