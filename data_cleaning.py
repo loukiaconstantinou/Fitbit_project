@@ -4,6 +4,7 @@ from functools import reduce
 import ast
 import numpy as np
 
+#parser function
 def parse_args():
     import argparse
     parser = argparse.ArgumentParser()
