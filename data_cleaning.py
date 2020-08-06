@@ -48,8 +48,9 @@ def to_dt(name):
 
 activity = to_dt(activity)
 calories = to_dt(calories)
-distance = to_do(distance)
-resting_heart_rate = to_do(resting_heart_rate)
+distance = to_dt(distance)
+resting_heart_rate = to_dt(resting_heart_rate)
+steps = to_dt(steps)
 
 
 steps = steps.groupby(steps.dateTime.dt.date, sort=False)['value'].sum().reset_index(name ='Total_Steps')
@@ -58,7 +59,7 @@ distance = distance.groupby(distance.dateTime.dt.date, sort=False)['value'].sum(
 
 steps = to_dt(steps)
 calories = to_dt(calories)
-distance = to_do(distance)
+distance = to_dt(distance)
 
 sleep_score = sleep_score[['timestamp', 'overall_score']]
 
@@ -119,6 +120,6 @@ final_df = reduce(lambda  left,right: pd.merge(left,right,on=['dateTime'],
 
 
 new_df = final_df.dropna()
-new_df.to_csv(r"/{}_final_df3.csv".format(path), index = False)
+new_df.to_csv(r"/{}_final_df.csv".format(path), index = False)
 
 
