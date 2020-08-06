@@ -57,8 +57,9 @@ def to_dt(name):
 #change type of dateTime columns to datetime
 activity = to_dt(activity)
 calories = to_dt(calories)
-distance = to_do(distance)
-resting_heart_rate = to_do(resting_heart_rate)
+distance = to_dt(distance)
+resting_heart_rate = to_dt(resting_heart_rate)
+steps = to_dt(steps)
 
 #calculate total steps done each day
 steps = steps.groupby(steps.dateTime.dt.date, sort=False)['value'].sum().reset_index(name ='Total_Steps')
@@ -70,7 +71,7 @@ distance = distance.groupby(distance.dateTime.dt.date, sort=False)['value'].sum(
 #change type of dateTime columns to datetime
 steps = to_dt(steps)
 calories = to_dt(calories)
-distance = to_do(distance)
+distance = to_dt(distance)
 
 #create dataframe by only getting sleeping score and date from dataframe
 sleep_score = sleep_score[['timestamp', 'overall_score']]
@@ -148,7 +149,9 @@ final_df = reduce(lambda  left,right: pd.merge(left,right,on=['dateTime'],
 
 #remove rows that have at least one na value in them
 new_df = final_df.dropna()
+
 #save the new dataframe as a csv
-new_df.to_csv(r"/{}_final_df3.csv".format(path), index = False)
+new_df.to_csv(r"/{}_final_df.csv".format(path), index = False)
+
 
 
