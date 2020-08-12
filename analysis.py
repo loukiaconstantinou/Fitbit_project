@@ -4,15 +4,17 @@ from functools import reduce
 import ast
 import numpy as np
 
+#parser function to get datapath and name of person to make analysis on
 def parse_args():
     import argparse
+    #define parser
     parser = argparse.ArgumentParser()
     parser.add_argument("--datapath", type=str, help="Input data path (dataframe_csv)", default= os.getcwd())
     parser.add_argument("--name", type=str, default="Loukia", 
     help="person to import data from", choices=["Loukia", "Kyriacos", "Irene", "Christina"])
     args = parser.parse_args()
     return args
-
+#call the parser function
 args = parse_args()
 
 if not os.path.isdir("plots_{}".format(args.name)):

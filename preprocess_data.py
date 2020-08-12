@@ -5,10 +5,11 @@ from functools import reduce
 import ast
 import numpy as np
 
-#parser function
+#parser function to get datapath and name of person to make analysis on
 def parse_args():
     import argparse
-    parser = argparse.ArgumentParser()
+    #define parser
+    parser = argparse.ArgumentParser() 
     parser.add_argument("--datapath", type=str, help="Input data path", required=True)
     parser.add_argument("--name", type=str, default="Loukia", 
     help="person to import data from", choices=["Loukia", "Kyriacos", "Irene", "Christina"])
