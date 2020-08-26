@@ -116,9 +116,10 @@ sns.barplot(x=fi.feature, y=fi.importance)
 #add labels to the graph
 plt.xlabel('Features') #rename the x-axis title
 plt.ylabel('Feature Importance Score') #rename the y-axis title
-plt.title("Visualizing Important Features") #rename the title of the figure
+plt.title("Visualising Important Features") #rename the title of the figure
 plt.xticks(rotation=75) #rotate the x-axis labels
 plt.legend() #add legend
+plt.tight_layout()
 fig.savefig('{}/vis_features_{}.png'.format(path, args.train), dpi=400) #save the figure
 
 #compute accuracy of the decision tree using train dataframe
@@ -285,9 +286,10 @@ sns.barplot(x=fi.feature, y=fi.importance)
 #add labels to the graph
 plt.xlabel('Features') #rename the x-axis title
 plt.ylabel('Feature Importance Score') #rename the y-axis title
-plt.title("Visualizing Important Features") #rename the title of the figure
+plt.title("Visualising Important Features") #rename the title of the figure
 plt.xticks(rotation=75) #rotate the x-axis labels
 plt.legend() #add legend
+plt.tight_layout()
 fig.savefig('{}/vis_feat_2_{}.png'.format(path, args.train), dpi=400) #save the figure
 
 #pull out one tree from the forest (tree number 5)
