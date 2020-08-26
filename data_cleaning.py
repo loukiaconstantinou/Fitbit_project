@@ -5,9 +5,10 @@ from functools import reduce
 import ast
 import numpy as np
 
-#parser function
+#parser function to get datapath and name of person to make analysis on
 def parse_args():
     import argparse
+    #define parser
     parser = argparse.ArgumentParser()
     parser.add_argument("--datapath", type=str, help="Input data path (combined_csv_files)", required=True)
     parser.add_argument("--name", type=str, default="Loukia", 
@@ -16,6 +17,7 @@ def parse_args():
     return args
 
 args = parse_args()
+#get path
 path = '{}/combined_csv_files_{}'.format(args.datapath, args.name)
 
 #read sleep_score csv file

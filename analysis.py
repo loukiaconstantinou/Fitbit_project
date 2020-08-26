@@ -32,6 +32,7 @@ new_df['dateTime'] = pd.to_datetime(new_df['dateTime'])
 
 # new_df.columns = new_df.columns.to_series().apply(lambda x: x.strip())
 
+day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 ## EDA
 
 #Correlation Matrix
@@ -53,7 +54,7 @@ def CorrMtx(df, dropDuplicates = True):
     sns.set_style(style = 'white')
 
     #set up  matplotlib figure
-    f, ax = plt.subplots(figsize=(11, 9))
+    f, ax = plt.subplots(figsize=(15, 15))
 
     #add diverging colormap from red to blue
     cmap = sns.diverging_palette(250, 10, as_cmap=True)
@@ -63,11 +64,13 @@ def CorrMtx(df, dropDuplicates = True):
         sns.heatmap(df, mask=mask, cmap=cmap, 
                 square=True,
                 linewidth=.5, cbar_kws={"shrink": .5}, ax=ax)  
+        f.tight_layout()
         f.savefig('{}svm_conf.png'.format(path), dpi=400) #save the figure
     else:
         sns.heatmap(df, cmap=cmap, 
                 square=True,
                 linewidth=.5, cbar_kws={"shrink": .5}, ax=ax)
+        f.tight_layout()
         f.savefig('{}/svm_conf.png'.format(path), dpi=400) #save the figure
 
 #plot correlation matrix
@@ -75,6 +78,7 @@ CorrMtx(corrdf_calories, dropDuplicates = False)
 
 #use pairplot function to plot pairplot of the same features
 sns.pairplot(corrdf_calories.dropna(), kind="scatter", markers="+", plot_kws=dict(s=50, edgecolor="b", linewidth=1))
+plt.tight_layout()
 plt.savefig('{}/pairplot.png'.format(path), dpi=400) #save the figure
 
 #Step Analysis
@@ -93,7 +97,7 @@ plt.title('');
 #second figure
 ax2 = f.add_subplot(122) 
 #plot boxplot of total steps completed for each day
-new_df.boxplot(column = 'Total_Steps', by = 'day', vert = False, widths = 0.4, ax=ax2)
+sns.boxplot(x=new_df.Total_Steps, y=new_df.day, order=day_order)
 plt.xlabel('Difference in number of steps each day') #rename the x-axis title
 plt.ylabel('Day') #rename the y-axis title
 plt.suptitle('')
@@ -101,6 +105,7 @@ plt.title('');
 
 #adjust whitespace between boxplots
 plt.subplots_adjust(wspace = 1)
+plt.tight_layout()
 plt.savefig('{}/box_plots_steps.png'.format(path), dpi = 400) #save the figure
 
 #Day Analysis
@@ -111,7 +116,8 @@ fig = plt.figure(figsize = (20,6))
 #first figure
 ax = plt.subplot(141)  
 #group by day and find the average number of steps completed in one day & plot the bar chart
-new_df.groupby('day').Total_Steps.mean().plot.bar()
+# new_df.groupby('day').Total_Steps.mean().plot.bar()
+new_df.groupby('day').Total_Steps.mean().loc[day_order].plot.bar()
 plt.title('Day of Week vs. Steps', fontsize=15) #rename the title fo the figure
 plt.xlabel('Day of Week', fontsize=14) #rename the x-axis title
 plt.ylabel('Steps', fontsize=14) #rename the y-axis title
@@ -123,7 +129,7 @@ ax.axhline(10000, color="orange", linestyle='--')
 #second figure
 ax2 = fig.add_subplot(142)
 #group by day and find the average calories burned in one day & plot the bar chart
-new_df.groupby('day').Total_Calories.mean().plot.bar()
+new_df.groupby('day').Total_Calories.mean().loc[day_order].plot.bar()
 plt.title('Day of Week vs. Calories Burned', fontsize=15) #rename the title fo the figure
 plt.xlabel('Day of Week', fontsize=14) #rename the x-axis title
 plt.ylabel('Calories Burned', fontsize=14) #rename the y-axis title
@@ -131,7 +137,7 @@ plt.ylabel('Calories Burned', fontsize=14) #rename the y-axis title
 #third figure
 ax3 = fig.add_subplot(143)
 #group by day and find the average time the user is very active in one day
-new_df.groupby('day').very_active_minutes.mean().plot.bar()
+new_df.groupby('day').very_active_minutes.mean().loc[day_order].plot.bar()
 plt.title('Day of Week vs. Minutes Very Active', fontsize=15) #rename the title fo the figure
 plt.xlabel('Day of Week', fontsize=14) #rename the x-axis title
 plt.ylabel('Minutes Very Active', fontsize=14) #rename the y-axis title
@@ -139,20 +145,23 @@ plt.ylabel('Minutes Very Active', fontsize=14) #rename the y-axis title
 #fourth figure
 ax4 = fig.add_subplot(144)
 #group by day and find the average time the user is sedentary in one day & plot the bar chart
-new_df.groupby('day').sedentary_minutes.mean().plot.bar()
+new_df.groupby('day').sedentary_minutes.mean().loc[day_order].plot.bar()
 plt.title('Day of Week vs. Minutes Sedentary', fontsize=15) #rename the title fo the figure
 plt.xlabel('Day of Week', fontsize=14) #rename the x-axis title
 plt.ylabel('Minutes Sedentary', fontsize=14) #rename the y-axis title
+plt.tight_layout()
 fig.savefig('{}/bar_days.png'.format(path), dpi = 400) #save the figure
 
 #line graph
 #set up matplot figure
 fig = plt.figure(figsize = (10,8))
 #group by day and find the average resting heart rate in one day & plot the line graph
-new_df.groupby('day').resting_heart_rate.mean().plot.line()
+# new_df.groupby('day').resting_heart_rate.mean().plot.line()
+new_df.groupby('day').resting_heart_rate.mean().loc[day_order].plot.line()
 plt.title('Day of Week vs. Resting Heart Rate', fontsize=15) #rename the title fo the figure
 plt.xlabel('Day of Week', fontsize=14) #rename the x-axis title
 plt.ylabel('Resting Heart Rate', fontsize=14) #rename the y-axis title
+plt.tight_layout()
 fig.savefig('{}/line_days.png'.format(path), dpi = 400) #save the figure
 
 #Sleep Analysis
@@ -184,7 +193,7 @@ plt.title('');
 #second figure
 ax2 = f.add_subplot(122)
 #plot boxplot of minutes asleep for each day
-new_df.boxplot(column = 'minutes_asleep', by = 'day', vert = False, widths = 0.4, ax=ax2)
+sns.boxplot(x=new_df.minutes_asleep, y=new_df.day, order=day_order)
 plt.xlabel('Difference in minutes in Bed each day') #rename the x-axis title
 plt.ylabel('Day') #rename the y-axis title
 plt.suptitle('')
@@ -192,6 +201,7 @@ plt.title('');
 
 #adjust whitespace between boxplots
 plt.subplots_adjust(wspace = 1)
+plt.tight_layout()
 plt.savefig('{}/box_plots_sleep.png'.format(path), dpi = 400) #save the figure
 
 #pie chart
@@ -216,13 +226,15 @@ labels=['Deep sleep', 'Awake', 'Light sleep', 'REM sleep']
 #plot the pie chart
 plt.pie(avg_perc_sleep, colors = ['darkturquoise', 'salmon', 'lightskyblue', 'yellowgreen'], autopct='%1.1f%%', labels=labels, textprops=dict(color="w"))
 
-plt.title('Average of types of sleep', fontsize=14) #rename the title of the figure
+plt.title('Time in Each Sleep Cycle Stage (percentage of total time in bed)', fontsize=14) #rename the title of the figure
 plt.legend() #add legend
+plt.tight_layout()
 fig.savefig('{}/pie_sleep.png'.format(path), dpi = 400) #save the figure
 
 #bar chart
 #group by day and find the average time the user is in each each stage in the sleep cycle & plot the bar chart
-sleep_perc_df.groupby('day').mean()[["deep", "wake", "light", "rem"]].plot(kind='bar')
+sleep_perc_df.groupby('day').mean()[["deep", "wake", "light", "rem"]].loc[day_order].plot(kind='bar')
+plt.tight_layout()
 plt.savefig('{}/days_sleep.png'.format(path), dpi = 400) #save the figure
 
 #Resting Heart Rate Analysis
@@ -247,4 +259,5 @@ fig = plt.figure(figsize = (10, 8))
 plt.scatter(week_df['very_active_minutes'], week_df['resting_heart_rate'])
 plt.xlabel('very_active_minutes') #rename the x-axis title
 plt.ylabel('resting_heart_rate') #rename the y-axis title
+plt.tight_layout()
 fig.savefig('{}/v_act_rest.png'.format(path)) #save the figure
